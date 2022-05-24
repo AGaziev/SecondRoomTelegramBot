@@ -1,4 +1,5 @@
 import logging
+import datetime
 
 from aiogram import types
 
@@ -18,6 +19,7 @@ def registerUser(userId, info: dict):
     noveltyListForNewUser = listForNewUser()
     db.child('userInfo').child(userId).child('noveltyCheck').set(noveltyListForNewUser)
     db.child('userInfo').child(userId).update({'info': info})
+    db.child('userInfo').child(userId).update({'dateOfRegistration': datetime.datetime.now()})
     logging.info(f'New user registered to bot with id: {userId}')
 
 

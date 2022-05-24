@@ -11,6 +11,13 @@ def getCategories() -> dict:
     return categoryList
 
 
+def getInfoAboutCategories() -> dict:
+    categoriesInfo = {}
+    for category in getCategories().keys():
+        categoriesInfo[category] = getMainCategoryCount(category)
+    return categoriesInfo
+
+
 def getMainCategoryCount(category) -> int:
     categoryCount = 0
     countersOfCategory = db.child('categories').child(category).get().each()

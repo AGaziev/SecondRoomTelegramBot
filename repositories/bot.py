@@ -13,4 +13,3 @@ try:
     dp = Dispatcher(bot, storage=fsm)
 except:
     logging.critical('Произошла ошибка при авторизации токена')
-    print('Произошла ошибка при авторизации токена')

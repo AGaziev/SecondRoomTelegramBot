@@ -1,18 +1,18 @@
 from aiogram import types
 
-import View.adminTemplates as adminTemplates
+import View.Templates.adminTemplates as templates
 from repositories.bot import bot
 
 
 async def onAdminPanelEnter(adminId: int, keyboard: types.InlineKeyboardMarkup):
     await bot.send_message(chat_id=adminId,
-                           text=adminTemplates.adminGreeting,
+                           text=templates.adminGreeting,
                            reply_markup=keyboard)
 
 
 async def adminPanelReject(adminId: int):
     await bot.send_message(chat_id=adminId,
-                           text=adminTemplates.authorizationRejection)
+                           text=templates.authorizationRejection)
 
 
 async def chooseCategory(callback: types.CallbackQuery, categoryKeyboard: types.ReplyKeyboardMarkup):
@@ -32,7 +32,7 @@ async def chooseSubCategory(message: types.Message, subCategoryKeyboard):
 async def chooseProperty(message: types.Message, nameOfProperty, propertyKeyboard=types.ReplyKeyboardRemove(),
                          isOptional=False):
     await bot.send_message(chat_id=message.from_user.id,
-                           text=adminTemplates.getTextForPropertyRequest(nameOfProperty, isOptional),
+                           text=templates.getTextForPropertyRequest(nameOfProperty, isOptional),
                            reply_markup=propertyKeyboard)
 
 
@@ -58,5 +58,5 @@ async def endAddingPhoto(message: types.Message, endAddingKeyboard):
 
 
 async def postNewClothInChannel(clothInfo: dict):
-    await bot.send_media_group(adminTemplates.channelIdForPosting,
-                               media=adminTemplates.createMediaGroupForPost(clothInfo))
+    await bot.send_media_group(templates.channelIdForPosting,
+                               media=templates.createMediaGroupForPost(clothInfo))
