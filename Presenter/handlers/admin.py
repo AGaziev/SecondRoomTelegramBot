@@ -125,6 +125,7 @@ async def endAddingCloth(message: types.Message, state: FSMContext):
 
 # @dp.callback_query_handler(state=FSMAdmin.photo,text='returnToPanel')
 async def returnToAdminPanel(callback: types.CallbackQuery, state: FSMContext):
+    await callback.answer()
     async with state.proxy() as data:
         data['user'] = callback.from_user.mention
         data['userId'] = callback.from_user.id
