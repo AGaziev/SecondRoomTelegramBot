@@ -22,7 +22,7 @@ def getSubcategoryMenu(subcategoryInfo: dict, noveltyInfo: dict):
     text = ''
     for subcategory in subcategoryInfo.keys():
         if subcategoryInfo[subcategory] != 0:
-            text += f'{subcategory} - {subcategoryInfo[subcategory]}{" NEW!" if subcategory in noveltyInfo else ""}\n'
+            text += f'{subcategory} - {subcategoryInfo[subcategory]}{" 🆕" if subcategory in noveltyInfo else ""}\n'
 
     if text == '':
         text = 'Нет вещей в выбранной категории'
@@ -44,7 +44,7 @@ def createMediaGroup(cloth, current, total):
 def getClothInfoForBot(data: dict, current, total):
     try:                    # splitting dd-mm-yyyy
         if getDataDifference(data['date'].split('-')) < 3:
-            dateText = ' NEW!'
+            dateText = ' 🆕'
         else:
             dateText = ''
     except:
