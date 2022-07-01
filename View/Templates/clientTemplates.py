@@ -49,7 +49,10 @@ def getClothInfoForBot(data: dict, current, total):
             dateText = ''
     except:
         dateText = ''
-    userMention = f"<a href=\"tg://user?id={data['userId']}\">{data['user']}</a>"
+    try:
+        userMention = f"<a href=\"tg://user?id={data['userId']}\">{data['user']}</a>"
+    except:
+        userMention = data['user']
     name = (f'\"{data["name"]}\"' if data["name"] != 'None' else '')
     return f'{current}/{total}\n' \
            f'{data["subCategory"]}{dateText}\n' \

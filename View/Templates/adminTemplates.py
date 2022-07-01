@@ -17,7 +17,10 @@ def getTextForPropertyRequest(name, isOptional=False):
 
 
 def getClothInfoForChannel(data: dict):
-    userMention = f"<a href=\"tg://user?id={data['userId']}\">{data['user']}</a>"
+    try:
+        userMention = f"<a href=\"tg://user?id={data['userId']}\">{data['user']}</a>"
+    except:
+        userMention = data['user']
     name = (f'\"{data["name"]}\"' if data["name"] != 'None' else '')
     return f'{data["brand"]}\n\n' \
            f'{data["subCategory"]} {name}\n\n' \

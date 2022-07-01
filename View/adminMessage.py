@@ -1,3 +1,5 @@
+from typing import Union
+
 from aiogram import types
 
 import View.Templates.adminTemplates as templates
@@ -42,7 +44,7 @@ async def waitForPhoto(message: types.Message, endAddingKeyboard=types.ReplyKeyb
                            reply_markup=endAddingKeyboard)
 
 
-async def deletePhoto(photoId: bool | str, chatId):
+async def deletePhoto(photoId: Union[bool, str], chatId):
     if photoId is False:
         await bot.send_message(chatId, 'Еще ни одного фото не было добавлено')
     else:
