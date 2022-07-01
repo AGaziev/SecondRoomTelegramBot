@@ -9,7 +9,7 @@ info = 'Главный - @biruytskovskynf\n ' \
 toStart = 'Введите /start для открытия контекстного меню'
 
 def getCategoryMenu(categoryInfo: dict, noveltyInfo: dict):
-    newEmoji = emoji.emojize(':new:')
+    newEmoji = '🆕'
     text = 'Количество вещей в каждой категории\n\n'
     for category in categoryInfo.keys():
         text += f'{category} - {categoryInfo[category]}{f" {newEmoji}" if category in noveltyInfo else ""}\n'
