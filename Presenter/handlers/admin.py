@@ -30,7 +30,7 @@ class FSMAdmin(StatesGroup):
 #                     commands='отмена',
 #                     state=FSMAdmin.GroupStates['addCloth'])
 async def cancelAdd(message: types.Message, state: FSMContext):
-    if adminController.authorization():
+    if adminController.authorization(message.from_user.id):
         logging.info(f'{message.chat.id} exit admin panel')
     await message.reply('Отмена')
     await state.finish()
