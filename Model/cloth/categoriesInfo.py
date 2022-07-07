@@ -1,59 +1,39 @@
 import logging
-
+from Model.model import *
 from repositories.database import db
 
-
 def getCategories() -> dict:
-    try:
-        categoryList = dict(db.child('categories').get().val())
-    except TypeError:
-        categoryList = {}
+    with db:
+        subInfo = Subcategory.select(Subcategory.title.alias('sub'),
+                                     Category.title.alias('cat'),
+                                     fn.Count(Cloth.id != 'None').alias('c')) \
+            .join(Category) \
+            .left_outer_join(Cloth, on=Cloth.subcategory == Subcategory.id).group_by(Subcategory.id).dicts()
+    categoryList = {k.title: {} for k in Category.select(Category.title)}
+    for i in subInfo:
+        categoryList[i['cat']].update({i['sub']: i['c']})
     return categoryList
-
 
 def getInfoAboutCategories() -> dict:
     categoriesInfo = {}
-    for category in getCategories().keys():
-        categoriesInfo[category] = getMainCategoryCount(category)
+    for category, subsInfo in getCategories().items():
+        categoriesInfo[category] = sum(subsInfo.values())
     return categoriesInfo
 
-
-def getMainCategoryCount(category) -> int:
-    categoryCount = 0
-    countersOfCategory = db.child('categories').child(category).get().each()
-    if countersOfCategory is not None:
-        for subCategoryCounter in countersOfCategory:
-            categoryCount += subCategoryCounter.val()
-    return categoryCount
-
-
-def getNumberOfClothes(category, subCategory, justCheck=False) -> int:
-    clothes = db.child('CLOTHES').child(category).child(subCategory).get().each()
-    if clothes is not None:
-        count = len(clothes)
-    else:
-        count = 0
-    if not justCheck:
-        db.child('categories').child(category).child(subCategory).set(count)
-    return count
+# TODO DELETE
+# def getMainCategoryCount(category) -> int:
+#     categoryCount = 0
+#     countersOfCategory = db.child('categories').child(category).get().each()
+#     if countersOfCategory is not None:
+#         for subCategoryCounter in countersOfCategory:
+#             categoryCount += subCategoryCounter.val()
+#     return categoryCount
 
 
-def updateAllClothesCounter():
-    clothesCount = 0
-    for category in getCategories().keys():
-        clothesCount += getMainCategoryCount(category)
-    db.child('statistics/counterOfItemsInStore').set(clothesCount)
-    logging.info('Updated Counter of all clothes')
-    return clothesCount
+def getNumberOfClothes(category, subCategory) -> int:
+    return getCategories()[category][subCategory]
 
-
-def totalUpdate():
-    for cat, subcat in getCategories().items():
-        for sub in subcat.keys():
-            getNumberOfClothes(cat, sub)
-    updateAllClothesCounter()
-
-
+#TODO after novelty creator
 def categoriesWithNew(id):  # get categories with new items
     id = str(id)
     catsWithNew = []
@@ -63,7 +43,7 @@ def categoriesWithNew(id):  # get categories with new items
             catsWithNew.append(cat)
     return catsWithNew
 
-
+#TODO after novelty creator
 def subcatWithNew(id, category):  # get subcategories with new items
     id = str(id)
     subCatsWithNew = []

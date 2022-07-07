@@ -10,13 +10,15 @@ from Model.cloth import categoriesInfo, clothManager
 
 usedCommands = ['/start', '/help', '/login', '/admin']
 
-
 class FSMClient(StatesGroup):
     defualtClient = State()
     categorySelect = State()
     subCategorySelect = State()
     showClothes = State()
 
+
+async def infoAboutUser(message: types.Message):
+    print(message.from_user.values)
 
 # @dp.message_handler(Text(equals='информация', ignore_case=True))
 async def info(message: types.Message):
@@ -95,8 +97,8 @@ async def showClothes(callback: types.CallbackQuery, state: FSMContext):
         await sender.startClothShow(userId=callback.from_user.id,
                                     flipperKeyboard=clientKeyboardCreator.getFlipperKeyboard(callback.from_user.id))
         show['currentCloth'] = 0
-        show['currentClothId'] = list(show['clothes'].keys())[show['currentCloth']]
-        show['countOfCloths'] = categoriesInfo.getNumberOfClothes(show['category'], show['subCategory'])
+        show['currentClothId'] = show['clothes'][show['currentCloth']]['id']
+        show['countOfCloths'] = len(show['clothes'])
         await sendCurrentCloth(callback.from_user.id, show)
         await FSMClient.next()
 
@@ -175,5 +177,6 @@ def registerHandlers(dp):
                                        state=FSMClient.categorySelect)
     dp.register_callback_query_handler(showClothes, state=FSMClient.subCategorySelect)
     dp.register_message_handler(getAnother, Text(equals=['<<', '>>']), state=FSMClient.showClothes)
-    dp.register_message_handler(default, lambda message: message not in usedCommands)
+    dp.register_message_handler(infoAboutUser, lambda message: message not in usedCommands)
+    # dp.register_message_handler(default, lambda message: message not in usedCommands)
     # InitLogger.info('client handlers registered')

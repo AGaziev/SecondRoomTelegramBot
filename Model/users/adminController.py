@@ -12,7 +12,7 @@ def authorization(adminId):
 def getAdmin() -> dict:
     admins = {}
     try:
-        tempAdmins = dict(db.child('sellers').child('admins').get().val())
+        tempAdmins = Use
     except TypeError:
         tempAdmins = {}
     for id, name in tempAdmins.items():

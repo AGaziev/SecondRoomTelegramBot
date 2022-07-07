@@ -6,7 +6,6 @@ from aiogram import types
 from .noveltyController import listForNewUser
 from repositories.database import db
 
-
 def checkUserRegistration(userId, message: types.Message):  # check if user used a bot
     if str(userId) not in list(getRegisteredUsers()):
         registerUser(userId, message.from_user.values)

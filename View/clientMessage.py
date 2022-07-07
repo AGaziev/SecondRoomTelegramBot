@@ -7,6 +7,11 @@ from repositories.bot import bot
 async def info(userId):
     await bot.send_message(userId, text=templates.info)
 
+# DEBUG
+async def infoAboutUser(userId):
+    await bot.send_message(userId,
+                           text=userInfo)
+
 
 async def start(userId, startKeyboard):
     await bot.send_message(userId,

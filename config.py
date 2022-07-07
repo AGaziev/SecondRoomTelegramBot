@@ -3,15 +3,15 @@ import logging
 import os
 
 from cryptocode import decrypt
-# from dotenv import load_dotenv
-#
-# try:
-#     load_dotenv(__file__ + '/../.env.local')
-# except Exception as e:
-#     print(e)
-#     logging.error('no env file found')
-# else:
-#     logging.info('all variables have loaded to env')
+from dotenv import load_dotenv
+
+try:
+    load_dotenv(__file__ + '/../.env.local')
+except Exception as e:
+    print(e)
+    logging.error('no env file found')
+else:
+    logging.info('all variables have loaded to env')
 
 FIREBASE_CONFIG = {
     'apiKey': os.getenv("FIREBASE_API_KEY"),
